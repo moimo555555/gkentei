@@ -167,6 +167,11 @@ const DEFAULT_CARDS = [
 ];
 
 function loadCards() {
+  if (location.search.includes('reset')) {
+    try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+    history.replaceState(null, '', location.pathname);
+    return JSON.parse(JSON.stringify(DEFAULT_CARDS));
+  }
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) return JSON.parse(saved);
