@@ -10,26 +10,21 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif; background: #F2F2F7; min-height: 100vh; }
-
   .header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; padding-top: max(16px, env(safe-area-inset-top)); background: #fff; border-bottom: 0.5px solid #C6C6C8; position: sticky; top: 0; z-index: 10; }
   .header h1 { font-size: 17px; font-weight: 600; color: #000; }
   .tabs { display: flex; gap: 6px; }
   .tab-btn { font-size: 13px; padding: 6px 14px; border-radius: 20px; border: none; background: #E5E5EA; color: #3C3C43; cursor: pointer; font-weight: 500; transition: all 0.15s; }
   .tab-btn.active { background: #007AFF; color: #fff; }
-
   .view { display: none; padding: 20px 16px; padding-bottom: 40px; }
   .view.active { display: block; }
-
   .filter-row { display: flex; gap: 6px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 4px; }
   .filter-row::-webkit-scrollbar { display: none; }
   .filter-btn { font-size: 12px; padding: 5px 12px; border-radius: 20px; border: none; background: #E5E5EA; color: #3C3C43; cursor: pointer; white-space: nowrap; font-weight: 500; flex-shrink: 0; }
   .filter-btn.active { background: #007AFF; color: #fff; }
-
   .progress-row { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
   .progress-bar { flex: 1; height: 4px; background: #E5E5EA; border-radius: 2px; overflow: hidden; }
   .progress-fill { height: 100%; background: #34C759; border-radius: 2px; transition: width 0.3s; }
   .progress-text { font-size: 12px; color: #8E8E93; min-width: 40px; text-align: right; }
-
   .card-wrap { perspective: 1000px; margin-bottom: 16px; }
   .card { width: 100%; min-height: 220px; position: relative; transform-style: preserve-3d; transition: transform 0.45s cubic-bezier(0.4,0,0.2,1); cursor: pointer; user-select: none; }
   .card.flipped { transform: rotateY(180deg); }
@@ -38,14 +33,12 @@
   .card-back { background: #E8F9EE; box-shadow: 0 2px 12px rgba(52,199,89,0.2); transform: rotateY(180deg); }
   .card-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #8E8E93; font-weight: 600; }
   .card-back .card-label { color: #30A84B; }
-  .card-word { font-size: 26px; font-weight: 600; color: #000; text-align: center; line-height: 1.3; }
-  .card-back .card-word { color: #1B7D33; font-size: 16px; font-weight: 500; line-height: 1.6; }
+  .card-word { font-size: 24px; font-weight: 600; color: #000; text-align: center; line-height: 1.3; }
+  .card-back .card-word { color: #1B7D33; font-size: 15px; font-weight: 500; line-height: 1.6; }
   .card-category { font-size: 11px; background: #F2F2F7; color: #8E8E93; padding: 3px 10px; border-radius: 20px; margin-top: 4px; }
   .card-sub { font-size: 13px; color: #C7C7CC; margin-top: 4px; }
   .card-back .card-sub { color: #30A84B; }
-
   .tap-hint { text-align: center; font-size: 13px; color: #8E8E93; margin-bottom: 16px; }
-
   .nav-row { display: flex; gap: 10px; }
   .nav-btn { flex: 1; padding: 14px; border-radius: 12px; border: none; font-size: 15px; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.15s; }
   .nav-btn:active { transform: scale(0.97); }
@@ -53,21 +46,17 @@
   .btn-ok { background: #E8F9EE; color: #1B7D33; }
   .btn-prev { background: #F2F2F7; color: #8E8E93; }
   .btn-skip { background: #F2F2F7; color: #3C3C43; }
-
   .result-card { background: #fff; border-radius: 16px; padding: 32px 24px; text-align: center; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
   .result-score { font-size: 56px; font-weight: 700; color: #007AFF; }
   .result-label { font-size: 15px; color: #8E8E93; margin-top: 4px; }
   .result-detail { font-size: 13px; color: #C7C7CC; margin-top: 8px; }
   .restart-btn { width: 100%; padding: 14px; border-radius: 12px; border: none; background: #007AFF; color: #fff; font-size: 15px; font-weight: 500; cursor: pointer; }
-
   .empty { text-align: center; padding: 60px 20px; color: #8E8E93; }
-
   .section-title { font-size: 13px; font-weight: 600; color: #8E8E93; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; padding-left: 4px; }
   .input-group { display: flex; gap: 8px; margin-bottom: 8px; }
   .input-group input, .input-group select { flex: 1; padding: 11px 14px; border-radius: 10px; border: none; background: #fff; color: #000; font-size: 15px; box-shadow: 0 0 0 0.5px #C6C6C8; -webkit-appearance: none; }
   .input-group input:focus, .input-group select:focus { outline: none; box-shadow: 0 0 0 2px #007AFF; }
   .add-btn { padding: 11px 16px; border-radius: 10px; border: none; background: #007AFF; color: #fff; font-size: 20px; font-weight: 300; cursor: pointer; }
-
   .card-list { display: flex; flex-direction: column; gap: 1px; background: #C6C6C8; border-radius: 12px; overflow: hidden; }
   .card-item { display: flex; align-items: center; gap: 8px; background: #fff; padding: 10px 14px; }
   .card-item:first-child { border-radius: 12px 12px 0 0; }
@@ -81,7 +70,6 @@
 </style>
 </head>
 <body>
-
 <div class="header">
   <h1>🤖 G検定単語帳</h1>
   <div class="tabs">
@@ -89,26 +77,23 @@
     <button class="tab-btn" onclick="switchTab('edit')" id="tab-edit">⚙️ 管理</button>
   </div>
 </div>
-
 <div class="view active" id="view-study">
   <div class="filter-row" id="filter-row"></div>
   <div id="study-content"></div>
 </div>
-
 <div class="view" id="view-edit">
   <p class="section-title">新しいカードを追加</p>
   <div class="input-group">
-    <input type="text" id="input-q" placeholder="用語（例: ドロップアウト）">
+    <input type="text" id="input-q" placeholder="用語">
   </div>
   <div class="input-group">
     <input type="text" id="input-a" placeholder="説明">
     <select id="input-cat">
-      <option value="基礎">基礎</option>
+      <option value="AI基礎">AI基礎</option>
       <option value="機械学習">機械学習</option>
       <option value="深層学習">深層学習</option>
-      <option value="自然言語">自然言語</option>
       <option value="生成AI">生成AI</option>
-      <option value="法律・倫理">法律・倫理</option>
+      <option value="倫理・法律">倫理・法律</option>
       <option value="その他">その他</option>
     </select>
     <button class="add-btn" onclick="addCard()">＋</button>
@@ -116,54 +101,142 @@
   <p class="section-title" style="margin-top:16px;">カード一覧 (<span id="card-count">0</span>枚)</p>
   <div class="card-list" id="card-list"></div>
 </div>
-
 <script>
-const STORAGE_KEY = 'gkentei_cards_v1';
-
+const STORAGE_KEY = 'gkentei_v2';
 const DEFAULT_CARDS = [
-  // 基礎・AIの歴史
-  {q:'強いAI', a:'人間のような意識・自己認識を持つAI。現在は実現していない。', cat:'基礎'},
-  {q:'弱いAI', a:'特定のタスクを遂行するために設計されたAI。現在実用化されているAIはすべてこれ。', cat:'基礎'},
-  {q:'汎化', a:'学習データ以外の未知のデータにも正しく対応できる能力。', cat:'基礎'},
-  {q:'過学習（オーバーフィッティング）', a:'学習データには高精度だが、未知データに対して精度が低下する状態。', cat:'基礎'},
-  {q:'教師あり学習', a:'正解ラベル付きデータを使ってモデルを訓練する手法。分類・回帰が代表例。', cat:'機械学習'},
-  {q:'教師なし学習', a:'正解ラベルなしでデータの構造やパターンを学習する手法。クラスタリングが代表例。', cat:'機械学習'},
-  {q:'強化学習', a:'エージェントが環境と相互作用しながら報酬を最大化するように学習する手法。', cat:'機械学習'},
-  {q:'交差検証（クロスバリデーション）', a:'データをK分割して、学習・評価を繰り返すモデル検証手法。', cat:'機械学習'},
-  {q:'バイアス・バリアンストレードオフ', a:'モデルの誤差はバイアス（偏り）とバリアンス（ばらつき）の兼ね合いで決まるという考え方。', cat:'機械学習'},
-  {q:'正則化', a:'過学習を抑制するためにモデルの複雑さにペナルティを与える手法。L1・L2正則化が代表。', cat:'機械学習'},
+  // AI基礎
+  {q:'人工知能（AI）', a:'人間の知的活動（学習・推論・判断・理解）をコンピュータで再現する技術の総称。', cat:'AI基礎'},
+  {q:'第1次AIブーム', a:'1956〜1960年代。ダートマス会議でAI誕生。探索と推論が主流だったがトイプロブレムしか解けなかった。', cat:'AI基礎'},
+  {q:'第2次AIブーム', a:'1980年代。エキスパートシステムの実用化。知識ベースとルールエンジンで専門家の判断を再現。', cat:'AI基礎'},
+  {q:'第3次AIブーム', a:'2000年代〜現在。機械学習とディープラーニングによる実用化。ビッグデータと計算能力の向上が牽引。', cat:'AI基礎'},
+  {q:'チューリングテスト', a:'人間と機械を区別できなければ機械は「知能を持つ」と判定する試験。アラン・チューリング提唱。', cat:'AI基礎'},
+  {q:'中国語の部屋', a:'ジョン・サールが提唱した思考実験。構文処理だけでは意味理解にならないという強いAI批判。', cat:'AI基礎'},
+  {q:'強いAI', a:'人間と同等の意識や理解を持つAI。現在は実現していない。', cat:'AI基礎'},
+  {q:'弱いAI', a:'特定タスクに特化したAI。現在のほぼ全てのAIシステムはこちら。', cat:'AI基礎'},
+  {q:'汎用人工知能（AGI）', a:'人間のようにあらゆるタスクをこなせるAI。現在研究段階。', cat:'AI基礎'},
+  {q:'記号主義', a:'知識をシンボルとルールで表現するAIアプローチ。第2次ブーム期の主流。', cat:'AI基礎'},
+  {q:'エキスパートシステム', a:'専門家の知識をIF-THENルールで実装したシステム。MYCIN、DENDRALなど。', cat:'AI基礎'},
+  {q:'フレーム問題', a:'AIが現実世界の無限の状況変化を処理しきれないという問題。第1次ブームの限界を示した。', cat:'AI基礎'},
+  {q:'シンギュラリティ', a:'AIが人間の知能を超える転換点。レイ・カーツワイルが2045年頃と予測。', cat:'AI基礎'},
+  {q:'幅優先探索（BFS）', a:'根に近い階層から順に探索。最短経路が保証されるが記憶量が多い。', cat:'AI基礎'},
+  {q:'深さ優先探索（DFS）', a:'一つの枝を深く掘り下げて探索。記憶量は少ないが最適解の保証なし。', cat:'AI基礎'},
+  {q:'A*探索', a:'ヒューリスティック関数で評価し効率的に最適解を見つける探索アルゴリズム。', cat:'AI基礎'},
+  {q:'Min-Max法', a:'ゲーム木で自分は最大、相手は最小の評価値を選ぶと仮定して最適手を探すアルゴリズム。', cat:'AI基礎'},
+  {q:'α-β枝刈り', a:'Min-Max法で探索不要な枝を刈り込んで高速化する手法。', cat:'AI基礎'},
+  {q:'モンテカルロ木探索（MCTS）', a:'ランダムシミュレーションで勝率を推定して探索する手法。囲碁AIで採用。', cat:'AI基礎'},
+  {q:'オントロジー', a:'概念とその関係を体系的に記述した知識ベース。Webオントロジー言語（OWL）など。', cat:'AI基礎'},
+  // 機械学習
+  {q:'機械学習', a:'データから自動的にパターンを学習し予測や判断を行う技術の総称。', cat:'機械学習'},
+  {q:'教師あり学習', a:'入力と正解ラベルのペアから学習し未知データを予測する手法。分類・回帰が代表例。', cat:'機械学習'},
+  {q:'教師なし学習', a:'ラベルなしデータから構造やパターンを発見する手法。クラスタリング・次元削減が代表例。', cat:'機械学習'},
+  {q:'強化学習', a:'試行錯誤で報酬を最大化する行動を学習する手法。ゲームAIやロボット制御で利用。', cat:'機械学習'},
+  {q:'分類', a:'データをカテゴリに振り分けるタスク。スパムメール判定、画像認識など。', cat:'機械学習'},
+  {q:'回帰', a:'連続値を予測するタスク。売上予測、気温予測など。', cat:'機械学習'},
+  {q:'クラスタリング', a:'データを類似性に基づいてグループ化する手法。k-means、階層的クラスタリングなど。', cat:'機械学習'},
+  {q:'k-means法', a:'k個のクラスタ中心を反復更新してデータを分割する教師なし学習アルゴリズム。', cat:'機械学習'},
+  {q:'決定木', a:'条件分岐を木構造で表現する分類・回帰手法。解釈性が高い。', cat:'機械学習'},
+  {q:'ランダムフォレスト', a:'複数の決定木をアンサンブルし精度を向上させる手法。', cat:'機械学習'},
+  {q:'勾配ブースティング', a:'弱学習器を逐次的に追加して精度を高めるアンサンブル手法。XGBoost、LightGBMなど。', cat:'機械学習'},
+  {q:'サポートベクターマシン（SVM）', a:'マージン最大化で分類境界を決定する手法。カーネルトリックで非線形分離可能。', cat:'機械学習'},
+  {q:'ロジスティック回帰', a:'線形モデルをシグモイド関数で0〜1に変換し確率を出力する分類手法。', cat:'機械学習'},
+  {q:'過学習（Overfitting）', a:'訓練データに過剰適合し未知データで性能が低下する現象。モデルが複雑すぎる場合に発生。', cat:'機械学習'},
+  {q:'汎化性能', a:'未知データに対する予測精度。機械学習の最終目標。', cat:'機械学習'},
+  {q:'交差検証', a:'データをk分割し各分割を1回ずつテストデータとして評価する手法（k-fold）。', cat:'機械学習'},
+  {q:'精度（Accuracy）', a:'全予測のうち正解した割合。不均衡データでは指標として不適切。', cat:'機械学習'},
+  {q:'適合率（Precision）', a:'Positiveと予測した中で実際にPositiveだった割合。誤検知を減らしたいときに重視。', cat:'機械学習'},
+  {q:'再現率（Recall）', a:'実際のPositiveのうち正しくPositiveと予測できた割合。見逃しを減らしたいときに重視。', cat:'機械学習'},
+  {q:'F値（F1 Score）', a:'適合率と再現率の調和平均。両者のバランスを見る指標。', cat:'機械学習'},
+  {q:'混同行列', a:'予測と正解の組み合わせを2×2の表で表現。TP・TN・FP・FNを可視化。', cat:'機械学習'},
+  {q:'ROC曲線', a:'偽陽性率と真陽性率の関係を描いた曲線。分類性能の評価に使用。', cat:'機械学習'},
+  {q:'AUC', a:'ROC曲線の下側面積。1に近いほど高性能な分類器。', cat:'機械学習'},
+  {q:'正則化', a:'モデルの複雑さにペナルティを課して過学習を防ぐ手法。L1・L2正則化など。', cat:'機械学習'},
+  {q:'L1正則化（Lasso）', a:'パラメータの絶対値の和にペナルティ。不要な特徴量の重みを0にする効果。', cat:'機械学習'},
+  {q:'L2正則化（Ridge）', a:'パラメータの二乗和にペナルティ。重みを小さくするが0にはしない。', cat:'機械学習'},
+  {q:'早期終了（Early Stopping）', a:'検証データの誤差が悪化し始めたら学習を止めて過学習を防ぐ手法。', cat:'機械学習'},
+  {q:'アンサンブル学習', a:'複数のモデルを組み合わせて予測精度を向上させる手法。バギング・ブースティングなど。', cat:'機械学習'},
+  {q:'バイアス・バリアンストレードオフ', a:'モデルの単純さ（高バイアス）と複雑さ（高バリアンス）のバランス調整。', cat:'機械学習'},
+  {q:'次元の呪い', a:'特徴量（次元）が増えるほど必要なデータ量が指数的に増加し学習が困難になる問題。', cat:'機械学習'},
+  {q:'特徴量', a:'機械学習モデルへの入力となるデータの各属性・変数。', cat:'機械学習'},
+  {q:'主成分分析（PCA）', a:'データの分散が最大になる方向に次元を削減する教師なし学習手法。', cat:'機械学習'},
+  {q:'Q学習', a:'強化学習の代表的手法。状態と行動の価値（Q値）を反復更新して最適方策を学習。', cat:'機械学習'},
+  {q:'マルコフ決定過程（MDP）', a:'強化学習の数理的枠組み。状態・行動・報酬・遷移確率で定義される。', cat:'機械学習'},
   // 深層学習
-  {q:'活性化関数', a:'ニューラルネットワークの各ノードで非線形変換を行う関数。ReLU・シグモイドなど。', cat:'深層学習'},
-  {q:'ReLU', a:'Rectified Linear Unit。x>0のとき出力=x、x≤0のとき出力=0となる活性化関数。現在最も広く使われる。', cat:'深層学習'},
-  {q:'誤差逆伝播法（バックプロパゲーション）', a:'出力層から入力層に向けて誤差を逆方向に伝播させ、重みを更新する学習アルゴリズム。', cat:'深層学習'},
-  {q:'ドロップアウト', a:'学習時にランダムにニューロンを無効化することで過学習を防ぐ正則化手法。', cat:'深層学習'},
-  {q:'バッチ正規化', a:'各層の入力を正規化することで学習を安定・高速化する手法。', cat:'深層学習'},
-  {q:'CNN（畳み込みニューラルネットワーク）', a:'画像認識に特化したネットワーク。畳み込み層とプーリング層が特徴。', cat:'深層学習'},
-  {q:'RNN（再帰型ニューラルネットワーク）', a:'時系列・系列データを扱うネットワーク。前の状態を次の処理に引き継ぐ構造。', cat:'深層学習'},
-  {q:'LSTM', a:'Long Short-Term Memory。RNNの長期依存問題を解決するゲート機構付きの構造。', cat:'深層学習'},
-  {q:'転移学習', a:'大規模データで学習済みのモデルを別のタスクに応用する手法。少ないデータで高精度を実現。', cat:'深層学習'},
-  {q:'ファインチューニング', a:'事前学習済みモデルのパラメータを新しいタスク用に再学習・調整すること。', cat:'深層学習'},
-  // 自然言語処理
-  {q:'Transformer', a:'Attention機構のみで構成されたニューラルネットワーク。現代のLLMの基盤となるアーキテクチャ。', cat:'自然言語'},
-  {q:'Attention機構', a:'入力系列の各部分の重要度を動的に計算し、重み付けして処理する仕組み。', cat:'自然言語'},
-  {q:'BERT', a:'双方向Transformerによる事前学習モデル。文脈を両方向から理解できる。', cat:'自然言語'},
-  {q:'トークナイゼーション', a:'テキストをモデルが処理できる単位（トークン）に分割する処理。', cat:'自然言語'},
-  {q:'Word2Vec', a:'単語を固定長のベクトルに変換する手法。意味的に近い単語は近いベクトルになる。', cat:'自然言語'},
+  {q:'ニューラルネットワーク', a:'脳の神経回路を模したモデル。入力層・中間層（隠れ層）・出力層で構成。', cat:'深層学習'},
+  {q:'深層学習（ディープラーニング）', a:'多層（深い）ニューラルネットワークを用いた機械学習の総称。', cat:'深層学習'},
+  {q:'活性化関数', a:'ニューロンの出力を非線形変換する関数。ReLU・Sigmoid・tanhなど。', cat:'深層学習'},
+  {q:'ReLU', a:'f(x)=max(0,x)。深層学習で最も使われる活性化関数。勾配消失問題を緩和。', cat:'深層学習'},
+  {q:'Sigmoid関数', a:'f(x)=1/(1+e^-x)。出力を0〜1に変換。二値分類の出力層で使用。', cat:'深層学習'},
+  {q:'Softmax関数', a:'多クラス分類の出力層で使用。出力を確率分布（合計1）に変換。', cat:'深層学習'},
+  {q:'誤差逆伝播法', a:'出力誤差を逆向きに伝播させて各層の重みを更新する学習アルゴリズム。', cat:'深層学習'},
+  {q:'勾配降下法', a:'損失関数の勾配方向に重みを更新する最適化手法。', cat:'深層学習'},
+  {q:'確率的勾配降下法（SGD）', a:'ミニバッチ単位で勾配を計算して更新する手法。計算コストが低い。', cat:'深層学習'},
+  {q:'学習率', a:'重み更新の幅を決めるハイパーパラメータ。大きすぎると発散、小さすぎると収束が遅い。', cat:'深層学習'},
+  {q:'エポック', a:'全訓練データを1回学習したサイクル。複数エポック繰り返して学習する。', cat:'深層学習'},
+  {q:'勾配消失問題', a:'深い層で勾配が0に近づき学習が進まない問題。ReLUやBatch Normalizationで緩和。', cat:'深層学習'},
+  {q:'勾配爆発', a:'勾配が指数的に大きくなり学習が不安定になる問題。勾配クリッピングで対処。', cat:'深層学習'},
+  {q:'ドロップアウト', a:'ニューラルネットワークでランダムにノードを無効化して過学習を防ぐ手法。', cat:'深層学習'},
+  {q:'バッチ正規化（Batch Normalization）', a:'ミニバッチ単位で各層の入力を正規化し学習を安定化する手法。', cat:'深層学習'},
+  {q:'CNN（畳み込みニューラルネットワーク）', a:'畳み込み層とプーリング層で画像の特徴を抽出するアーキテクチャ。画像認識に特化。', cat:'深層学習'},
+  {q:'畳み込み層', a:'フィルタ（カーネル）を画像上でスライドさせて特徴マップを生成する層。', cat:'深層学習'},
+  {q:'プーリング層', a:'特徴マップのサイズを縮小する層。Max PoolingやAverage Poolingがある。', cat:'深層学習'},
+  {q:'RNN（再帰型ニューラルネットワーク）', a:'過去の情報を保持しながら系列データを処理するアーキテクチャ。', cat:'深層学習'},
+  {q:'LSTM', a:'長期依存関係を学習できるRNNの改良版。ゲート機構で情報を制御。', cat:'深層学習'},
+  {q:'GRU', a:'LSTMを簡略化したRNN。ゲート数が少なく計算効率が良い。', cat:'深層学習'},
+  {q:'Attention機構', a:'入力の重要な部分に注目して処理する仕組み。Seq2Seqの精度向上に貢献。', cat:'深層学習'},
+  {q:'Self-Attention', a:'入力系列内の各要素間の関係性を学習する仕組み。Transformerの核心。', cat:'深層学習'},
+  {q:'Transformer', a:'Attentionのみで構成される自然言語処理の主流アーキテクチャ。RNNより並列化可能。', cat:'深層学習'},
+  {q:'BERT', a:'双方向Transformerで文脈を学習する事前学習モデル。Google開発。', cat:'深層学習'},
+  {q:'GPT', a:'Transformerベースの生成型言語モデル。左から右への一方向学習。OpenAI開発。', cat:'深層学習'},
+  {q:'ResNet', a:'スキップ接続で勾配消失を回避する超深層CNN。152層でも学習可能。', cat:'深層学習'},
+  {q:'転移学習', a:'大規模データで学習済みのモデルを別タスクに応用する手法。少ないデータで高精度を実現。', cat:'深層学習'},
+  {q:'ファインチューニング', a:'事前学習済みモデルのパラメータを特定タスクのデータで追加学習する手法。', cat:'深層学習'},
+  {q:'エンベディング（Embedding）', a:'単語や文を高次元ベクトルで表現する手法。意味の類似性が距離で測れる。', cat:'深層学習'},
   // 生成AI
-  {q:'LLM（大規模言語モデル）', a:'大量テキストで学習し人間のような文章を生成するモデル。GPT・Claude・Geminiなどが代表。', cat:'生成AI'},
-  {q:'GAN（敵対的生成ネットワーク）', a:'生成器と識別器が競い合って学習するモデル。画像生成などに使われる。', cat:'生成AI'},
-  {q:'拡散モデル（Diffusion Model）', a:'ノイズを徐々に除去することで画像を生成するモデル。Stable Diffusionが代表例。', cat:'生成AI'},
-  {q:'RAG（検索拡張生成）', a:'Retrieval-Augmented Generation。外部知識を検索してLLMの回答精度を高める手法。', cat:'生成AI'},
-  {q:'ハルシネーション', a:'LLMが事実と異なる情報を自信を持って生成してしまう現象。', cat:'生成AI'},
-  {q:'プロンプトエンジニアリング', a:'LLMから望ましい出力を得るために入力（プロンプト）を工夫・設計すること。', cat:'生成AI'},
-  {q:'ゼロショット学習', a:'学習データがない未知のクラスに対しても推論できる能力。', cat:'生成AI'},
-  {q:'フューショット学習', a:'少数の例示（数例）をプロンプトに含めてモデルに学習させる手法。', cat:'生成AI'},
-  // 法律・倫理
-  {q:'GDPR', a:'EU一般データ保護規則。個人データの収集・処理に関するEUの法律。', cat:'法律・倫理'},
-  {q:'AIの説明可能性（XAI）', a:'AIの判断根拠を人間が理解できる形で説明できること。Explainable AIの略。', cat:'法律・倫理'},
-  {q:'アルゴリズムバイアス', a:'学習データの偏りによりAIが差別的・不公平な判断をしてしまう問題。', cat:'法律・倫理'},
-  {q:'AI基本法（日本）', a:'日本で2024年に成立したAIの開発・利用に関する基本的な方向性を定めた法律。', cat:'法律・倫理'},
-  {q:'個人情報保護法', a:'個人情報の取扱いについて定めた日本の法律。AI学習データにも関係する。', cat:'法律・倫理'},
+  {q:'LLM（大規模言語モデル）', a:'数億〜数千億パラメータの大規模なTransformerベース言語モデル。GPT・BERT・Claude・Geminiなど。', cat:'生成AI'},
+  {q:'事前学習', a:'大量の汎用データで初期学習を行い言語の基礎知識を獲得するフェーズ。', cat:'生成AI'},
+  {q:'プロンプト', a:'LLMに与える指示文や質問。出力の質はプロンプトに大きく依存する。', cat:'生成AI'},
+  {q:'プロンプトエンジニアリング', a:'LLMから望ましい出力を引き出すためのプロンプト設計技術。', cat:'生成AI'},
+  {q:'Few-shot学習', a:'プロンプトに少数の例を含めてモデルに学習させる手法。', cat:'生成AI'},
+  {q:'Zero-shot学習', a:'例を与えずに指示だけでタスクを実行させる手法。', cat:'生成AI'},
+  {q:'In-context Learning', a:'プロンプト内の文脈から学習し、パラメータ更新なしでタスクを実行する能力。', cat:'生成AI'},
+  {q:'ハルシネーション', a:'LLMが事実でない情報を自信を持って生成する現象。', cat:'生成AI'},
+  {q:'トークン', a:'テキストを分割した単位。英語では単語やサブワード、日本語では1〜数文字。', cat:'生成AI'},
+  {q:'コンテキストウィンドウ', a:'LLMが一度に処理できるトークン数の上限。最新モデルでは数十万〜数百万トークンに対応。', cat:'生成AI'},
+  {q:'RAG（検索拡張生成）', a:'外部知識ベースを検索してLLMに与え正確性を向上させる手法。ハルシネーション対策にも有効。', cat:'生成AI'},
+  {q:'RLHF', a:'人間のフィードバックを報酬として強化学習でLLMを改善する手法。ChatGPTの対話品質の核心技術。', cat:'生成AI'},
+  {q:'Constitutional AI', a:'AIに憲法（行動原則）を与えて有害出力を抑制する手法。Anthropicが開発。', cat:'生成AI'},
+  {q:'Chain of Thought（CoT）', a:'LLMに段階的推論をさせて複雑な問題の精度を向上させる手法。', cat:'生成AI'},
+  {q:'基盤モデル（Foundation Model）', a:'大規模データで事前学習され多様なタスクに応用可能なモデル。LLMはその代表例。', cat:'生成AI'},
+  {q:'温度（Temperature）', a:'生成のランダム性を制御するパラメータ。高いと創造的、低いと確実な出力になる。', cat:'生成AI'},
+  {q:'生成AI', a:'新しいコンテンツ（文章・画像・音声・動画）を生成するAIの総称。', cat:'生成AI'},
+  {q:'GAN（敵対的生成ネットワーク）', a:'生成器と識別器を競わせて学習するモデル。画像生成などに使われる。', cat:'生成AI'},
+  {q:'VAE（変分オートエンコーダ）', a:'データを潜在空間に圧縮し再構成する生成モデル。', cat:'生成AI'},
+  {q:'Diffusion Model（拡散モデル）', a:'ノイズを段階的に除去して画像を生成するモデル。Stable Diffusionの基盤技術。', cat:'生成AI'},
+  {q:'マルチモーダルAI', a:'テキスト・画像・音声など複数の情報様式を統合処理するAI。', cat:'生成AI'},
+  {q:'LoRA', a:'少ないパラメータで大規模モデルを効率的にファインチューニングする手法。', cat:'生成AI'},
+  {q:'CLIP', a:'画像とテキストを同じ空間に埋め込む事前学習モデル。画像生成AIで活用。', cat:'生成AI'},
+  // 倫理・法律
+  {q:'AI倫理', a:'AIの開発・利用において人権や社会的価値を尊重するための規範。', cat:'倫理・法律'},
+  {q:'アルゴリズムバイアス', a:'アルゴリズム設計やデータ選択で生じる系統的な偏り。差別的な結果を招く可能性がある。', cat:'倫理・法律'},
+  {q:'公平性（Fairness）', a:'AIが特定の属性（性別・人種など）で不当に差別しないこと。', cat:'倫理・法律'},
+  {q:'透明性（Transparency）', a:'AIの動作原理や判断根拠を外部から理解できること。', cat:'倫理・法律'},
+  {q:'説明可能性（XAI）', a:'ブラックボックス化したAIの判断根拠を可視化する技術の総称。Explainable AIの略。', cat:'倫理・法律'},
+  {q:'LIME', a:'局所的な解釈モデルで予測理由を説明するXAI手法。', cat:'倫理・法律'},
+  {q:'SHAP', a:'ゲーム理論のShapley値で各特徴量の貢献度を計算するXAI手法。', cat:'倫理・法律'},
+  {q:'フィルターバブル', a:'レコメンドシステムが類似情報ばかり提示し視野が狭まる現象。', cat:'倫理・法律'},
+  {q:'エコーチェンバー', a:'同じ意見ばかりが反響し多様性が失われる情報環境。', cat:'倫理・法律'},
+  {q:'差分プライバシー', a:'個人データを保護しつつ統計的分析を可能にする手法。', cat:'倫理・法律'},
+  {q:'ディープフェイク', a:'ディープラーニングで生成した偽の画像・動画。悪用リスクが高い。', cat:'倫理・法律'},
+  {q:'Human in the Loop', a:'AI判断の最終決定に人間を介在させる設計思想。', cat:'倫理・法律'},
+  {q:'アラインメント', a:'AIの目標を人間の価値観と一致させる研究領域。', cat:'倫理・法律'},
+  {q:'GDPR', a:'EU域内の個人データ保護を規定する法律。AI開発にも影響。2018年施行。', cat:'倫理・法律'},
+  {q:'AI規制法（EU AI Act）', a:'EUが2024年8月に施行した世界初の包括的AI規制法。AIを4段階のリスクに分類。2026年8月完全施行予定。', cat:'倫理・法律'},
+  {q:'リスクベースアプローチ', a:'AIのリスクに応じて規制の厳しさを変える考え方。EU AI Actの基本方針。', cat:'倫理・法律'},
+  {q:'AIガバナンス', a:'AI開発・運用の適切性を組織的に管理する仕組み。', cat:'倫理・法律'},
+  {q:'AI事業者ガイドライン', a:'日本の総務省・経済産業省が策定したAI開発・利用の指針。法的拘束力はないが業界標準。', cat:'倫理・法律'},
+  {q:'プライバシーバイデザイン', a:'システム設計段階からプライバシー保護を組み込む考え方。', cat:'倫理・法律'},
+  {q:'モデルカード', a:'AIモデルの性能・限界・適用範囲を記載したドキュメント。', cat:'倫理・法律'},
+  {q:'レッドチーム演習', a:'AIの脆弱性や有害出力を意図的に引き出してテストする手法。', cat:'倫理・法律'},
 ];
 
 function loadCards() {
@@ -178,7 +251,6 @@ function loadCards() {
   } catch(e) {}
   return JSON.parse(JSON.stringify(DEFAULT_CARDS));
 }
-
 function saveCards() {
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(cards)); } catch(e) {}
 }
@@ -188,67 +260,38 @@ let currentCat = 'すべて';
 let deck = [], idx = 0, flipped = false, correct = 0, done = [];
 
 function getFilteredCards() {
-  if (currentCat === 'すべて') return cards;
-  return cards.filter(c => c.cat === currentCat);
+  return currentCat === 'すべて' ? cards : cards.filter(c => c.cat === currentCat);
 }
-
 function shuffle(arr) {
   const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
+  for (let i = a.length-1; i>0; i--) { const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
   return a;
 }
-
-function startDeck() {
-  deck = shuffle(getFilteredCards());
-  idx = 0; flipped = false; correct = 0; done = [];
-}
+function startDeck() { deck=shuffle(getFilteredCards()); idx=0; flipped=false; correct=0; done=[]; }
 
 function renderFilters() {
   const el = document.getElementById('filter-row');
   if (!el) return;
   const cats = ['すべて', ...new Set(cards.map(c => c.cat))];
-  el.innerHTML = cats.map(cat => `
-    <button class="filter-btn${currentCat === cat ? ' active' : ''}" onclick="setFilter('${cat}')">${cat}${cat === 'すべて' ? ` (${cards.length})` : ` (${cards.filter(c=>c.cat===cat).length})`}</button>
-  `).join('');
+  el.innerHTML = cats.map(cat => `<button class="filter-btn${currentCat===cat?' active':''}" onclick="setFilter('${cat}')">${cat} (${cat==='すべて'?cards.length:cards.filter(c=>c.cat===cat).length})</button>`).join('');
 }
-
-function setFilter(cat) {
-  currentCat = cat;
-  renderFilters();
-  startDeck();
-  renderStudy();
-}
+function setFilter(cat) { currentCat=cat; renderFilters(); startDeck(); renderStudy(); }
 
 function renderStudy() {
   const el = document.getElementById('study-content');
   const fc = getFilteredCards();
-  if (fc.length === 0) {
-    el.innerHTML = '<div class="empty"><p>カードがありません。</p></div>';
-    return;
-  }
-  if (done.length === deck.length) {
-    const pct = Math.round((correct / deck.length) * 100);
-    el.innerHTML = `
-      <div class="result-card">
-        <div class="result-score">${pct}%</div>
-        <div class="result-label">正解率</div>
-        <div class="result-detail">${correct} / ${deck.length} 問正解</div>
-      </div>
-      <button class="restart-btn" onclick="restart()">🔄 もう一度</button>`;
+  if (fc.length===0) { el.innerHTML='<div class="empty"><p>カードがありません。</p></div>'; return; }
+  if (done.length===deck.length) {
+    const pct = Math.round((correct/deck.length)*100);
+    el.innerHTML=`<div class="result-card"><div class="result-score">${pct}%</div><div class="result-label">正解率</div><div class="result-detail">${correct} / ${deck.length} 問正解</div></div><button class="restart-btn" onclick="restart()">🔄 もう一度</button>`;
     return;
   }
   const card = deck[idx];
-  const pct = Math.round((done.length / deck.length) * 100);
-  el.innerHTML = `
-    <div class="progress-row">
-      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
-      <span class="progress-text">${done.length + 1} / ${deck.length}</span>
-    </div>
+  const pct = Math.round((done.length/deck.length)*100);
+  el.innerHTML=`
+    <div class="progress-row"><div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div><span class="progress-text">${done.length+1} / ${deck.length}</span></div>
     <div class="card-wrap" style="min-height:${flipped?'260px':'220px'}">
-      <div class="card${flipped ? ' flipped' : ''}" id="flip-card" onclick="flipCard()" style="min-height:${flipped?'260px':'220px'}">
+      <div class="card${flipped?' flipped':''}" onclick="flipCard()" style="min-height:${flipped?'260px':'220px'}">
         <div class="card-face card-front" style="min-height:${flipped?'260px':'220px'}">
           <span class="card-label">用語</span>
           <span class="card-word">${escHtml(card.q)}</span>
@@ -262,105 +305,48 @@ function renderStudy() {
         </div>
       </div>
     </div>
-    ${flipped ? `
-    <p class="tap-hint">理解できましたか？</p>
-    <div class="nav-row">
-      <button class="nav-btn btn-again" onclick="next(false)">✗ もう一度</button>
-      <button class="nav-btn btn-ok" onclick="next(true)">✓ 理解した！</button>
-    </div>` : `
-    <p class="tap-hint">カードをタップして答えを確認</p>
-    <div class="nav-row">
-      <button class="nav-btn btn-prev" onclick="prevCard()" ${done.length === 0 ? 'disabled style="opacity:0.35"' : ''}>← 前へ</button>
-      <button class="nav-btn btn-skip" onclick="skipCard()">スキップ →</button>
-    </div>`}`;
+    ${flipped?`<p class="tap-hint">理解できましたか？</p><div class="nav-row"><button class="nav-btn btn-again" onclick="next(false)">✗ もう一度</button><button class="nav-btn btn-ok" onclick="next(true)">✓ 理解した！</button></div>`:`<p class="tap-hint">カードをタップして答えを確認</p><div class="nav-row"><button class="nav-btn btn-prev" onclick="prevCard()" ${done.length===0?'disabled style="opacity:0.35"':''}>← 前へ</button><button class="nav-btn btn-skip" onclick="skipCard()">スキップ →</button></div>`}`;
 }
 
-function escHtml(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-function flipCard() { flipped = !flipped; renderStudy(); }
-
-function next(ok) {
-  if (ok) correct++;
-  done.push(idx);
-  if (done.length < deck.length) {
-    idx = (idx + 1) % deck.length;
-    while (done.includes(idx)) idx = (idx + 1) % deck.length;
-  }
-  flipped = false;
-  renderStudy();
-}
-
-function skipCard() {
-  flipped = false;
-  idx = (idx + 1) % deck.length;
-  while (done.includes(idx) && done.length < deck.length) idx = (idx + 1) % deck.length;
-  renderStudy();
-}
-
-function prevCard() {
-  if (done.length > 0) { done.pop(); flipped = false; idx = (idx - 1 + deck.length) % deck.length; renderStudy(); }
-}
-
+function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function flipCard() { flipped=!flipped; renderStudy(); }
+function next(ok) { if(ok) correct++; done.push(idx); if(done.length<deck.length){idx=(idx+1)%deck.length; while(done.includes(idx))idx=(idx+1)%deck.length;} flipped=false; renderStudy(); }
+function skipCard() { flipped=false; idx=(idx+1)%deck.length; while(done.includes(idx)&&done.length<deck.length)idx=(idx+1)%deck.length; renderStudy(); }
+function prevCard() { if(done.length>0){done.pop(); flipped=false; idx=(idx-1+deck.length)%deck.length; renderStudy();} }
 function restart() { startDeck(); renderStudy(); }
 
 function renderCardList() {
-  const el = document.getElementById('card-list');
-  const countEl = document.getElementById('card-count');
-  if (!el) return;
-  if (countEl) countEl.textContent = cards.length;
-  if (cards.length === 0) {
-    el.innerHTML = '<div style="background:#fff;padding:16px;border-radius:12px;font-size:14px;color:#8E8E93;">カードがまだありません。</div>';
-    return;
-  }
-  el.innerHTML = cards.map((c, i) => `
-    <div class="card-item">
-      <span class="item-q">${escHtml(c.q)}</span>
-      <span class="item-arrow">→</span>
-      <span class="item-a">${escHtml(c.a)}</span>
-      <span class="item-cat">${escHtml(c.cat)}</span>
-      <button class="del-btn" onclick="deleteCard(${i})">✕</button>
-    </div>`).join('');
+  const el=document.getElementById('card-list');
+  const countEl=document.getElementById('card-count');
+  if(!el) return;
+  if(countEl) countEl.textContent=cards.length;
+  if(cards.length===0){el.innerHTML='<div style="background:#fff;padding:16px;border-radius:12px;font-size:14px;color:#8E8E93;">カードがまだありません。</div>';return;}
+  el.innerHTML=cards.map((c,i)=>`<div class="card-item"><span class="item-q">${escHtml(c.q)}</span><span class="item-arrow">→</span><span class="item-a">${escHtml(c.a)}</span><span class="item-cat">${escHtml(c.cat)}</span><button class="del-btn" onclick="deleteCard(${i})">✕</button></div>`).join('');
 }
-
 function addCard() {
-  const q = document.getElementById('input-q').value.trim();
-  const a = document.getElementById('input-a').value.trim();
-  const cat = document.getElementById('input-cat').value;
-  if (!q || !a) return;
-  cards.push({q, a, cat});
-  saveCards();
-  document.getElementById('input-q').value = '';
-  document.getElementById('input-a').value = '';
+  const q=document.getElementById('input-q').value.trim();
+  const a=document.getElementById('input-a').value.trim();
+  const cat=document.getElementById('input-cat').value;
+  if(!q||!a) return;
+  cards.push({q,a,cat}); saveCards();
+  document.getElementById('input-q').value=''; document.getElementById('input-a').value='';
   document.getElementById('input-q').focus();
-  renderCardList();
-  renderFilters();
-  startDeck();
+  renderCardList(); renderFilters(); startDeck();
 }
-
 function deleteCard(i) {
-  if (!confirm(`「${cards[i].q}」を削除しますか？`)) return;
-  cards.splice(i, 1);
-  saveCards();
-  renderCardList();
-  renderFilters();
-  startDeck();
-  renderStudy();
+  if(!confirm(`「${cards[i].q}」を削除しますか？`)) return;
+  cards.splice(i,1); saveCards(); renderCardList(); renderFilters(); startDeck(); renderStudy();
 }
-
 function switchTab(tab) {
-  document.getElementById('view-study').classList.toggle('active', tab === 'study');
-  document.getElementById('view-edit').classList.toggle('active', tab === 'edit');
-  document.getElementById('tab-study').classList.toggle('active', tab === 'study');
-  document.getElementById('tab-edit').classList.toggle('active', tab === 'edit');
-  if (tab === 'edit') renderCardList();
-  if (tab === 'study') { renderFilters(); renderStudy(); }
+  document.getElementById('view-study').classList.toggle('active',tab==='study');
+  document.getElementById('view-edit').classList.toggle('active',tab==='edit');
+  document.getElementById('tab-study').classList.toggle('active',tab==='study');
+  document.getElementById('tab-edit').classList.toggle('active',tab==='edit');
+  if(tab==='edit') renderCardList();
+  if(tab==='study'){renderFilters(); renderStudy();}
 }
 
-startDeck();
-renderFilters();
-renderStudy();
+startDeck(); renderFilters(); renderStudy();
 </script>
 </body>
 </html>
