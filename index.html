@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="G検定単語帳">
+<title>G検定単語帳</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif; background: #F2F2F7; min-height: 100vh; }
+
+  .header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; padding-top: max(16px, env(safe-area-inset-top)); background: #fff; border-bottom: 0.5px solid #C6C6C8; position: sticky; top: 0; z-index: 10; }
+  .header h1 { font-size: 17px; font-weight: 600; color: #000; }
+  .tabs { display: flex; gap: 6px; }
+  .tab-btn { font-size: 13px; padding: 6px 14px; border-radius: 20px; border: none; background: #E5E5EA; color: #3C3C43; cursor: pointer; font-weight: 500; transition: all 0.15s; }
+  .tab-btn.active { background: #007AFF; color: #fff; }
+
+  .view { display: none; padding: 20px 16px; padding-bottom: 40px; }
+  .view.active { display: block; }
+
+  .filter-row { display: flex; gap: 6px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 4px; }
+  .filter-row::-webkit-scrollbar { display: none; }
+  .filter-btn { font-size: 12px; padding: 5px 12px; border-radius: 20px; border: none; background: #E5E5EA; color: #3C3C43; cursor: pointer; white-space: nowrap; font-weight: 500; flex-shrink: 0; }
+  .filter-btn.active { background: #007AFF; color: #fff; }
+
+  .progress-row { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+  .progress-bar { flex: 1; height: 4px; background: #E5E5EA; border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: #34C759; border-radius: 2px; transition: width 0.3s; }
+  .progress-text { font-size: 12px; color: #8E8E93; min-width: 40px; text-align: right; }
+
+  .card-wrap { perspective: 1000px; margin-bottom: 16px; }
+  .card { width: 100%; min-height: 220px; position: relative; transform-style: preserve-3d; transition: transform 0.45s cubic-bezier(0.4,0,0.2,1); cursor: pointer; user-select: none; }
+  .card.flipped { transform: rotateY(180deg); }
+  .card-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 28px; }
+  .card-front { background: #fff; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+  .card-back { background: #E8F9EE; box-shadow: 0 2px 12px rgba(52,199,89,0.2); transform: rotateY(180deg); }
+  .card-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #8E8E93; font-weight: 600; }
+  .card-back .card-label { color: #30A84B; }
+  .card-word { font-size: 26px; font-weight: 600; color: #000; text-align: center; line-height: 1.3; }
+  .card-back .card-word { color: #1B7D33; font-size: 16px; font-weight: 500; line-height: 1.6; }
+  .card-category { font-size: 11px; background: #F2F2F7; color: #8E8E93; padding: 3px 10px; border-radius: 20px; margin-top: 4px; }
+  .card-sub { font-size: 13px; color: #C7C7CC; margin-top: 4px; }
+  .card-back .card-sub { color: #30A84B; }
+
+  .tap-hint { text-align: center; font-size: 13px; color: #8E8E93; margin-bottom: 16px; }
+
+  .nav-row { display: flex; gap: 10px; }
+  .nav-btn { flex: 1; padding: 14px; border-radius: 12px; border: none; font-size: 15px; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.15s; }
+  .nav-btn:active { transform: scale(0.97); }
+  .btn-again { background: #F2F2F7; color: #3C3C43; }
+  .btn-ok { background: #E8F9EE; color: #1B7D33; }
+  .btn-prev { background: #F2F2F7; color: #8E8E93; }
+  .btn-skip { background: #F2F2F7; color: #3C3C43; }
+
+  .result-card { background: #fff; border-radius: 16px; padding: 32px 24px; text-align: center; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .result-score { font-size: 56px; font-weight: 700; color: #007AFF; }
+  .result-label { font-size: 15px; color: #8E8E93; margin-top: 4px; }
+  .result-detail { font-size: 13px; color: #C7C7CC; margin-top: 8px; }
+  .restart-btn { width: 100%; padding: 14px; border-radius: 12px; border: none; background: #007AFF; color: #fff; font-size: 15px; font-weight: 500; cursor: pointer; }
+
+  .empty { text-align: center; padding: 60px 20px; color: #8E8E93; }
+
+  .section-title { font-size: 13px; font-weight: 600; color: #8E8E93; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; padding-left: 4px; }
+  .input-group { display: flex; gap: 8px; margin-bottom: 8px; }
+  .input-group input, .input-group select { flex: 1; padding: 11px 14px; border-radius: 10px; border: none; background: #fff; color: #000; font-size: 15px; box-shadow: 0 0 0 0.5px #C6C6C8; -webkit-appearance: none; }
+  .input-group input:focus, .input-group select:focus { outline: none; box-shadow: 0 0 0 2px #007AFF; }
+  .add-btn { padding: 11px 16px; border-radius: 10px; border: none; background: #007AFF; color: #fff; font-size: 20px; font-weight: 300; cursor: pointer; }
+
+  .card-list { display: flex; flex-direction: column; gap: 1px; background: #C6C6C8; border-radius: 12px; overflow: hidden; }
+  .card-item { display: flex; align-items: center; gap: 8px; background: #fff; padding: 10px 14px; }
+  .card-item:first-child { border-radius: 12px 12px 0 0; }
+  .card-item:last-child { border-radius: 0 0 12px 12px; }
+  .card-item:only-child { border-radius: 12px; }
+  .item-q { flex: 1; font-size: 14px; font-weight: 500; color: #000; }
+  .item-arrow { font-size: 12px; color: #C7C7CC; }
+  .item-a { flex: 1.5; font-size: 13px; color: #8E8E93; line-height: 1.4; }
+  .item-cat { font-size: 10px; background: #F2F2F7; color: #8E8E93; padding: 2px 7px; border-radius: 10px; white-space: nowrap; }
+  .del-btn { background: #FF3B30; border: none; border-radius: 6px; color: #fff; width: 28px; height: 28px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🤖 G検定単語帳</h1>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('study')" id="tab-study">学習</button>
+    <button class="tab-btn" onclick="switchTab('edit')" id="tab-edit">⚙️ 管理</button>
+  </div>
+</div>
+
+<div class="view active" id="view-study">
+  <div class="filter-row" id="filter-row"></div>
+  <div id="study-content"></div>
+</div>
+
+<div class="view" id="view-edit">
+  <p class="section-title">新しいカードを追加</p>
+  <div class="input-group">
+    <input type="text" id="input-q" placeholder="用語（例: ドロップアウト）">
+  </div>
+  <div class="input-group">
+    <input type="text" id="input-a" placeholder="説明">
+    <select id="input-cat">
+      <option value="基礎">基礎</option>
+      <option value="機械学習">機械学習</option>
+      <option value="深層学習">深層学習</option>
+      <option value="自然言語">自然言語</option>
+      <option value="生成AI">生成AI</option>
+      <option value="法律・倫理">法律・倫理</option>
+      <option value="その他">その他</option>
+    </select>
+    <button class="add-btn" onclick="addCard()">＋</button>
+  </div>
+  <p class="section-title" style="margin-top:16px;">カード一覧 (<span id="card-count">0</span>枚)</p>
+  <div class="card-list" id="card-list"></div>
+</div>
+
+<script>
+const STORAGE_KEY = 'gkentei_cards_v1';
+
+const DEFAULT_CARDS = [
+  // 基礎・AIの歴史
+  {q:'強いAI', a:'人間のような意識・自己認識を持つAI。現在は実現していない。', cat:'基礎'},
+  {q:'弱いAI', a:'特定のタスクを遂行するために設計されたAI。現在実用化されているAIはすべてこれ。', cat:'基礎'},
+  {q:'汎化', a:'学習データ以外の未知のデータにも正しく対応できる能力。', cat:'基礎'},
+  {q:'過学習（オーバーフィッティング）', a:'学習データには高精度だが、未知データに対して精度が低下する状態。', cat:'基礎'},
+  {q:'教師あり学習', a:'正解ラベル付きデータを使ってモデルを訓練する手法。分類・回帰が代表例。', cat:'機械学習'},
+  {q:'教師なし学習', a:'正解ラベルなしでデータの構造やパターンを学習する手法。クラスタリングが代表例。', cat:'機械学習'},
+  {q:'強化学習', a:'エージェントが環境と相互作用しながら報酬を最大化するように学習する手法。', cat:'機械学習'},
+  {q:'交差検証（クロスバリデーション）', a:'データをK分割して、学習・評価を繰り返すモデル検証手法。', cat:'機械学習'},
+  {q:'バイアス・バリアンストレードオフ', a:'モデルの誤差はバイアス（偏り）とバリアンス（ばらつき）の兼ね合いで決まるという考え方。', cat:'機械学習'},
+  {q:'正則化', a:'過学習を抑制するためにモデルの複雑さにペナルティを与える手法。L1・L2正則化が代表。', cat:'機械学習'},
+  // 深層学習
+  {q:'活性化関数', a:'ニューラルネットワークの各ノードで非線形変換を行う関数。ReLU・シグモイドなど。', cat:'深層学習'},
+  {q:'ReLU', a:'Rectified Linear Unit。x>0のとき出力=x、x≤0のとき出力=0となる活性化関数。現在最も広く使われる。', cat:'深層学習'},
+  {q:'誤差逆伝播法（バックプロパゲーション）', a:'出力層から入力層に向けて誤差を逆方向に伝播させ、重みを更新する学習アルゴリズム。', cat:'深層学習'},
+  {q:'ドロップアウト', a:'学習時にランダムにニューロンを無効化することで過学習を防ぐ正則化手法。', cat:'深層学習'},
+  {q:'バッチ正規化', a:'各層の入力を正規化することで学習を安定・高速化する手法。', cat:'深層学習'},
+  {q:'CNN（畳み込みニューラルネットワーク）', a:'画像認識に特化したネットワーク。畳み込み層とプーリング層が特徴。', cat:'深層学習'},
+  {q:'RNN（再帰型ニューラルネットワーク）', a:'時系列・系列データを扱うネットワーク。前の状態を次の処理に引き継ぐ構造。', cat:'深層学習'},
+  {q:'LSTM', a:'Long Short-Term Memory。RNNの長期依存問題を解決するゲート機構付きの構造。', cat:'深層学習'},
+  {q:'転移学習', a:'大規模データで学習済みのモデルを別のタスクに応用する手法。少ないデータで高精度を実現。', cat:'深層学習'},
+  {q:'ファインチューニング', a:'事前学習済みモデルのパラメータを新しいタスク用に再学習・調整すること。', cat:'深層学習'},
+  // 自然言語処理
+  {q:'Transformer', a:'Attention機構のみで構成されたニューラルネットワーク。現代のLLMの基盤となるアーキテクチャ。', cat:'自然言語'},
+  {q:'Attention機構', a:'入力系列の各部分の重要度を動的に計算し、重み付けして処理する仕組み。', cat:'自然言語'},
+  {q:'BERT', a:'双方向Transformerによる事前学習モデル。文脈を両方向から理解できる。', cat:'自然言語'},
+  {q:'トークナイゼーション', a:'テキストをモデルが処理できる単位（トークン）に分割する処理。', cat:'自然言語'},
+  {q:'Word2Vec', a:'単語を固定長のベクトルに変換する手法。意味的に近い単語は近いベクトルになる。', cat:'自然言語'},
+  // 生成AI
+  {q:'LLM（大規模言語モデル）', a:'大量テキストで学習し人間のような文章を生成するモデル。GPT・Claude・Geminiなどが代表。', cat:'生成AI'},
+  {q:'GAN（敵対的生成ネットワーク）', a:'生成器と識別器が競い合って学習するモデル。画像生成などに使われる。', cat:'生成AI'},
+  {q:'拡散モデル（Diffusion Model）', a:'ノイズを徐々に除去することで画像を生成するモデル。Stable Diffusionが代表例。', cat:'生成AI'},
+  {q:'RAG（検索拡張生成）', a:'Retrieval-Augmented Generation。外部知識を検索してLLMの回答精度を高める手法。', cat:'生成AI'},
+  {q:'ハルシネーション', a:'LLMが事実と異なる情報を自信を持って生成してしまう現象。', cat:'生成AI'},
+  {q:'プロンプトエンジニアリング', a:'LLMから望ましい出力を得るために入力（プロンプト）を工夫・設計すること。', cat:'生成AI'},
+  {q:'ゼロショット学習', a:'学習データがない未知のクラスに対しても推論できる能力。', cat:'生成AI'},
+  {q:'フューショット学習', a:'少数の例示（数例）をプロンプトに含めてモデルに学習させる手法。', cat:'生成AI'},
+  // 法律・倫理
+  {q:'GDPR', a:'EU一般データ保護規則。個人データの収集・処理に関するEUの法律。', cat:'法律・倫理'},
+  {q:'AIの説明可能性（XAI）', a:'AIの判断根拠を人間が理解できる形で説明できること。Explainable AIの略。', cat:'法律・倫理'},
+  {q:'アルゴリズムバイアス', a:'学習データの偏りによりAIが差別的・不公平な判断をしてしまう問題。', cat:'法律・倫理'},
+  {q:'AI基本法（日本）', a:'日本で2024年に成立したAIの開発・利用に関する基本的な方向性を定めた法律。', cat:'法律・倫理'},
+  {q:'個人情報保護法', a:'個人情報の取扱いについて定めた日本の法律。AI学習データにも関係する。', cat:'法律・倫理'},
+];
+
+function loadCards() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) return JSON.parse(saved);
+  } catch(e) {}
+  return JSON.parse(JSON.stringify(DEFAULT_CARDS));
+}
+
+function saveCards() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(cards)); } catch(e) {}
+}
+
+let cards = loadCards();
+let currentCat = 'すべて';
+let deck = [], idx = 0, flipped = false, correct = 0, done = [];
+
+function getFilteredCards() {
+  if (currentCat === 'すべて') return cards;
+  return cards.filter(c => c.cat === currentCat);
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function startDeck() {
+  deck = shuffle(getFilteredCards());
+  idx = 0; flipped = false; correct = 0; done = [];
+}
+
+function renderFilters() {
+  const el = document.getElementById('filter-row');
+  if (!el) return;
+  const cats = ['すべて', ...new Set(cards.map(c => c.cat))];
+  el.innerHTML = cats.map(cat => `
+    <button class="filter-btn${currentCat === cat ? ' active' : ''}" onclick="setFilter('${cat}')">${cat}${cat === 'すべて' ? ` (${cards.length})` : ` (${cards.filter(c=>c.cat===cat).length})`}</button>
+  `).join('');
+}
+
+function setFilter(cat) {
+  currentCat = cat;
+  renderFilters();
+  startDeck();
+  renderStudy();
+}
+
+function renderStudy() {
+  const el = document.getElementById('study-content');
+  const fc = getFilteredCards();
+  if (fc.length === 0) {
+    el.innerHTML = '<div class="empty"><p>カードがありません。</p></div>';
+    return;
+  }
+  if (done.length === deck.length) {
+    const pct = Math.round((correct / deck.length) * 100);
+    el.innerHTML = `
+      <div class="result-card">
+        <div class="result-score">${pct}%</div>
+        <div class="result-label">正解率</div>
+        <div class="result-detail">${correct} / ${deck.length} 問正解</div>
+      </div>
+      <button class="restart-btn" onclick="restart()">🔄 もう一度</button>`;
+    return;
+  }
+  const card = deck[idx];
+  const pct = Math.round((done.length / deck.length) * 100);
+  el.innerHTML = `
+    <div class="progress-row">
+      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+      <span class="progress-text">${done.length + 1} / ${deck.length}</span>
+    </div>
+    <div class="card-wrap" style="min-height:${flipped?'260px':'220px'}">
+      <div class="card${flipped ? ' flipped' : ''}" id="flip-card" onclick="flipCard()" style="min-height:${flipped?'260px':'220px'}">
+        <div class="card-face card-front" style="min-height:${flipped?'260px':'220px'}">
+          <span class="card-label">用語</span>
+          <span class="card-word">${escHtml(card.q)}</span>
+          <span class="card-category">${escHtml(card.cat)}</span>
+          <span class="card-sub" style="margin-top:8px;">タップして答えを見る</span>
+        </div>
+        <div class="card-face card-back" style="min-height:${flipped?'260px':'220px'}">
+          <span class="card-label">解説</span>
+          <span class="card-word">${escHtml(card.a)}</span>
+          <span class="card-sub">✓ 確認完了</span>
+        </div>
+      </div>
+    </div>
+    ${flipped ? `
+    <p class="tap-hint">理解できましたか？</p>
+    <div class="nav-row">
+      <button class="nav-btn btn-again" onclick="next(false)">✗ もう一度</button>
+      <button class="nav-btn btn-ok" onclick="next(true)">✓ 理解した！</button>
+    </div>` : `
+    <p class="tap-hint">カードをタップして答えを確認</p>
+    <div class="nav-row">
+      <button class="nav-btn btn-prev" onclick="prevCard()" ${done.length === 0 ? 'disabled style="opacity:0.35"' : ''}>← 前へ</button>
+      <button class="nav-btn btn-skip" onclick="skipCard()">スキップ →</button>
+    </div>`}`;
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function flipCard() { flipped = !flipped; renderStudy(); }
+
+function next(ok) {
+  if (ok) correct++;
+  done.push(idx);
+  if (done.length < deck.length) {
+    idx = (idx + 1) % deck.length;
+    while (done.includes(idx)) idx = (idx + 1) % deck.length;
+  }
+  flipped = false;
+  renderStudy();
+}
+
+function skipCard() {
+  flipped = false;
+  idx = (idx + 1) % deck.length;
+  while (done.includes(idx) && done.length < deck.length) idx = (idx + 1) % deck.length;
+  renderStudy();
+}
+
+function prevCard() {
+  if (done.length > 0) { done.pop(); flipped = false; idx = (idx - 1 + deck.length) % deck.length; renderStudy(); }
+}
+
+function restart() { startDeck(); renderStudy(); }
+
+function renderCardList() {
+  const el = document.getElementById('card-list');
+  const countEl = document.getElementById('card-count');
+  if (!el) return;
+  if (countEl) countEl.textContent = cards.length;
+  if (cards.length === 0) {
+    el.innerHTML = '<div style="background:#fff;padding:16px;border-radius:12px;font-size:14px;color:#8E8E93;">カードがまだありません。</div>';
+    return;
+  }
+  el.innerHTML = cards.map((c, i) => `
+    <div class="card-item">
+      <span class="item-q">${escHtml(c.q)}</span>
+      <span class="item-arrow">→</span>
+      <span class="item-a">${escHtml(c.a)}</span>
+      <span class="item-cat">${escHtml(c.cat)}</span>
+      <button class="del-btn" onclick="deleteCard(${i})">✕</button>
+    </div>`).join('');
+}
+
+function addCard() {
+  const q = document.getElementById('input-q').value.trim();
+  const a = document.getElementById('input-a').value.trim();
+  const cat = document.getElementById('input-cat').value;
+  if (!q || !a) return;
+  cards.push({q, a, cat});
+  saveCards();
+  document.getElementById('input-q').value = '';
+  document.getElementById('input-a').value = '';
+  document.getElementById('input-q').focus();
+  renderCardList();
+  renderFilters();
+  startDeck();
+}
+
+function deleteCard(i) {
+  if (!confirm(`「${cards[i].q}」を削除しますか？`)) return;
+  cards.splice(i, 1);
+  saveCards();
+  renderCardList();
+  renderFilters();
+  startDeck();
+  renderStudy();
+}
+
+function switchTab(tab) {
+  document.getElementById('view-study').classList.toggle('active', tab === 'study');
+  document.getElementById('view-edit').classList.toggle('active', tab === 'edit');
+  document.getElementById('tab-study').classList.toggle('active', tab === 'study');
+  document.getElementById('tab-edit').classList.toggle('active', tab === 'edit');
+  if (tab === 'edit') renderCardList();
+  if (tab === 'study') { renderFilters(); renderStudy(); }
+}
+
+startDeck();
+renderFilters();
+renderStudy();
+</script>
+</body>
+</html>
