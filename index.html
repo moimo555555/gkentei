@@ -293,14 +293,14 @@ function renderStudy() {
     <div class="card-wrap" style="min-height:${flipped?'260px':'220px'}">
       <div class="card${flipped?' flipped':''}" onclick="flipCard()" style="min-height:${flipped?'260px':'220px'}">
         <div class="card-face card-front" style="min-height:${flipped?'260px':'220px'}">
-          <span class="card-label">用語</span>
-          <span class="card-word">${escHtml(card.q)}</span>
+          <span class="card-label">解説</span>
+          <span class="card-word" style="font-size:15px;font-weight:500;line-height:1.6;">${escHtml(card.a)}</span>
           <span class="card-category">${escHtml(card.cat)}</span>
-          <span class="card-sub" style="margin-top:8px;">タップして答えを見る</span>
+          <span class="card-sub" style="margin-top:8px;">タップして用語を見る</span>
         </div>
         <div class="card-face card-back" style="min-height:${flipped?'260px':'220px'}">
-          <span class="card-label">解説</span>
-          <span class="card-word">${escHtml(card.a)}</span>
+          <span class="card-label">用語</span>
+          <span class="card-word" style="font-size:24px;">${escHtml(card.q)}</span>
           <span class="card-sub">✓ 確認完了</span>
         </div>
       </div>
